@@ -6,7 +6,126 @@ const router = express.Router();
 const app = express();
 
 app.use(express.json()); 
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+let a = {
+  swagger: "2.0",
+  info: {
+    version: "2017-04-20T04:08:08Z",
+    version: "1.0.0",
+    title: "Test By Ooy",
+    description: "Swagger By Ooy",
+  },
+  host: "397c3389-581d-4970-8133-e46ab0bfde84-00-2uodd2o8gobhx.kirk.replit.dev",
+  basePath: "/",
+  schemes: ["https"],
+  securityDefinitions: {
+    Bearer: {
+      type: "apiKey",
+      name: "Authorization",
+      in: "header",
+      description: '>-Enter the token with the `Bearer: ` prefix, e.g. "Bearer token"',
+    },
+  },
+  paths: {
+    "/citizenid": {
+      get: {
+        tags: ["Report"],
+        description: "get citizen_id",
+        produces: ["application/json"],
+        parameters: [
+          {
+            name: "citizen_id",
+            in: "query",
+            description: "citizen_id",
+            required: false,
+            type: "string",
+          },
+        ],
+        responses: {
+          200: {
+            description: "Success",
+            schema: {
+              type: "object",
+              properties: {
+                success: {
+                  type: "boolean",
+                  example: false,
+                },
+                requestId: {
+                  type: "string",
+                  example: "string",
+                },
+                error: {
+                  type: "array",
+                  items: {
+                    $ref: "#/definitions/ErrorModel",
+                  },
+                },
+              },
+              xml: {
+                name: "main",
+              },
+            },
+          },
+          401: {
+            description: "Unthorized",
+            schema: {
+              type: "object",
+              properties: {
+                success: {
+                  type: "boolean",
+                  example: false,
+                },
+                requestId: {
+                  type: "string",
+                  example: "string",
+                },
+                error: {
+                  type: "array",
+                  items: {
+                    $ref: "#/definitions/ErrorModel",
+                  },
+                },
+              },
+              xml: {
+                name: "main",
+              },
+            },
+          },
+          500: {
+            description: "Server Failure.",
+          },
+        },
+        security: [
+          {
+            Bearer: [],
+          },
+        ],
+      },
+    },
+  },
+  definitions: {
+    ErrorModel: {
+      type: "object",
+      properties: {
+        errorCode: {
+          type: "string",
+          example: "string",
+        },
+        errorMsg: {
+          type: "string",
+          example: "string",
+        },
+        errorDebug: {
+          type: "string",
+          example: "string",
+        },
+      },
+    },
+  },
+};
+
+app.use('/', swaggerUi.serve, swaggerUi.setup(a));
 
 app.listen(3000, () => {
   console.log(`Running on 3000`);
